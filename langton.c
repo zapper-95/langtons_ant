@@ -1,5 +1,6 @@
 #include "langton.h"
 #include <stdio.h>
+#include <string.h>
 void turn_left(struct ant *ant){
     if(ant->direction == UP){
         ant->direction = LEFT;
@@ -56,5 +57,24 @@ void apply_rule(enum colour *colour, struct ant *ant){ // Using LR rules
         turn_right(ant);
 	//printf("%d", *colour);
        	*colour = WHITE;
+    }
+}
+
+void apply_rule_general(enum colour *colour, struct ant *ant, struct rule *rule){
+    //Iterate through each character for the rule string in the rule struct
+    //if the colour is equal to the current index, then perform turn left (if the character is L)
+    //or turn right (if the character is R)
+    // afterwards, increment the colour by 1, wrapping back around to 0 if it is greater or equal to the length of the rule string
+    for(int i = 0; i < strlen(rule->rules); i++){
+        if(*colour == i){
+            if(rule->rules[i] == 'L'){
+                turn_left(ant);
+            }
+            else if(rule->rules[i] == 'R'){
+                turn_right(ant);
+            }
+            *colour = (*colour + 1) % strlen(rule->rules);
+            break;
+        }
     }
 }
