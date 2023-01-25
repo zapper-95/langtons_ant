@@ -8,7 +8,7 @@ static int max_x;
 static int max_y;
 
 typedef enum colour cell;
-
+typedef enum adv_colour adv_cell;
 void start_visualisation();
 void visualise_and_advance();
 void advanced_visualise_and_advance();

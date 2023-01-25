@@ -23,13 +23,20 @@ int main(int argc, char* argv[]){
 
     	struct ant *ant = malloc(sizeof(struct ant));
     	start_visualisation(ant);
+
+		//for (size_t i = 0; i < 10000; i++)
+		//{
+		//	advanced_visualise_and_advance(ant, rule);			
+		//}
+		
+
     	do
     	{
         	//visualise_and_advance(ant);
 			advanced_visualise_and_advance(ant, rule);
     	} while (not_quit());  
     	end_visualisation();
-	free(ant);    
+		free(ant);    
     	return 0;
 }
 

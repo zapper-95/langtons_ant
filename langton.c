@@ -50,17 +50,15 @@ void move_forward(struct ant *ant){
 void apply_rule(enum colour *colour, struct ant *ant){ // Using LR rules
     if(*colour == 0){ //If in state 0 turn left
        turn_left(ant);
-	//printf("%d", *colour);
        	*colour = BLACK;
     }
     else{  //If in state 1 turn right
         turn_right(ant);
-	//printf("%d", *colour);
        	*colour = WHITE;
     }
 }
 
-void apply_rule_general(enum colour *colour, struct ant *ant, struct rule *rule){
+void apply_rule_general(enum adv_colour *colour, struct ant *ant, struct rule *rule){
     //Iterate through each character for the rule string in the rule struct
     //if the colour is equal to the current index, then perform turn left (if the character is L)
     //or turn right (if the character is R)
