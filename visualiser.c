@@ -1,4 +1,4 @@
-#include <ncursesw/curses.h>
+#include <ncurses.h>
 #include <locale.h>
 #include <stdlib.h>
 #include "visualiser.h"
@@ -7,13 +7,15 @@
 #define cell_at(y,x) (cells[(y)*max_x + (x)])
 #define cell_under_ant cell_at(ant->y,ant->x)
 
-#define adv_cell_at(y,x) (adv_cells[(y)*max_x+(x)])
+#define adv_cell_at(y,x) (adv_cells[(y)*max_x+(x)]) //returns the advanced cell (integer corresponding to the state) at the given position
 #define adv_cell_under_ant adv_cell_at(ant->y,ant->x)
 
-cell *cells;
-adv_cell *adv_cells;
+static char* states_display = ".123456789ABCDEFGHIJKLMNOP"; //all the visual represetations of the states
 
-void wrap_around(struct ant* ant); //function prototype
+cell* cells;
+adv_cell* adv_cells;
+
+void wrap_around(struct ant* ant); //function prototype to wrap around
 
 void start_visualisation(struct ant* ant) {
   setlocale(LC_ALL, "");
@@ -23,7 +25,7 @@ void start_visualisation(struct ant* ant) {
    max_x = getmaxx(stdscr);
    max_y = getmaxy(stdscr);
    cells = calloc(max_y*max_x, sizeof(cell));
-   adv_cells = calloc(max_y*max_x, sizeof(adv_cell));
+   adv_cells = calloc(max_y*max_x, sizeof(adv_cell)); //allocates memory for the advanced cells and set them all to 0
    ant->x = max_x/2;
    ant->y = max_y/2;
    ant->direction = RIGHT;
@@ -49,10 +51,8 @@ void visualise_and_advance(struct ant* ant) {
       /* Advance to next step */
       apply_rule(&cell_under_ant, ant);
       move_forward(ant);
-	wrap_around(ant);      
+	wrap_around(ant); //changes the ant's position if it goes off the grid to a wrapped position
 }
-//write the code to define a char array which contains the first 26 numbers (from 0 to 25) as chars. Call it states
-char* states = ".123456789ABCDEFGHIJKLMNOP";
 
 
 void advanced_visualise_and_advance(struct ant* ant, struct rule* rules){
@@ -60,23 +60,23 @@ void advanced_visualise_and_advance(struct ant* ant, struct rule* rules){
       {
          for (int x=0; x<max_x; x++)
          {
-            int current_state = adv_cell_at(y,x);
-            //printf("%d", current_state);
-
+            int current_state = adv_cell_at(y,x); //gets an int corresponding to the cells state
             mvprintw(y,x,
                ant_is_at(y,x)
                  ? direction_to_s(ant->direction)
-                 :states+current_state
-
+                 :states_display+(current_state%26) //displays the state with its corresponding character in the states_display string
+                                                   //if there are more than 26 states then repeat the symbols in the visualisation by wrapping back around
             );
          
          }
       }
-
+   
    refresh();
+
+   /* Advance to next step */
    apply_rule_general(&adv_cell_under_ant, ant, rules);
    move_forward(ant);
-	wrap_around(ant);
+	wrap_around(ant); //changes the ant's position if it goes off the grid to a wrapped position
 
 }
 
@@ -100,8 +100,8 @@ const char* direction_to_s(enum direction d) {
           /* else */  ">" ;
 }
 
-void wrap_around(struct ant* ant) {
-      if(ant->x<0){
+void wrap_around(struct ant* ant) { //all four cases are checked to see whether the ant needs its position to be adjusted
+      if(ant->x<0){ 
       ant->x = max_x-1;
    }
       else if(ant->x >= max_x){
