@@ -28,9 +28,6 @@ int main(int argc, char* argv[]) {
 		rule->rules = current_rule;
 
 		// runs the advanced functionality
-		for (int i = 0; i < 0; i++) {
-			advanced_visualise_and_advance(ant, rule);
-		}
 		do {
 			advanced_visualise_and_advance(ant, rule);
 		} while (not_quit());
@@ -39,7 +36,6 @@ int main(int argc, char* argv[]) {
 					 // (as it is no longer needed)
 	} else {  // runs the basic functionality if no rule is provided
 		start_visualisation(ant);
-
 		do {
 			visualise_and_advance(ant);
 		} while (not_quit());
