@@ -10,8 +10,7 @@
 #define adv_cell_at(y,x) (adv_cells[(y)*max_x+(x)]) //returns the advanced cell (integer corresponding to the state) at the given position
 #define adv_cell_under_ant adv_cell_at(ant->y,ant->x)
 
-static char* states_display = ".123456789ABCDEFGHIJKLMNOP"; //all the visual represetations of the states
-
+static char* states_display[] = {".", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"};
 cell* cells;
 adv_cell* adv_cells;
 
@@ -24,6 +23,7 @@ void start_visualisation(struct ant* ant) {
    curs_set(FALSE);
    max_x = getmaxx(stdscr);
    max_y = getmaxy(stdscr);
+
    cells = calloc(max_y*max_x, sizeof(cell));
    adv_cells = calloc(max_y*max_x, sizeof(adv_cell)); //allocates memory for the advanced cells and set them all to 0
    ant->x = max_x/2;
@@ -64,10 +64,9 @@ void advanced_visualise_and_advance(struct ant* ant, struct rule* rules){
             mvprintw(y,x,
                ant_is_at(y,x)
                  ? direction_to_s(ant->direction)
-                 :states_display+(current_state%26) //displays the state with its corresponding character in the states_display string
+                 :states_display[current_state%26] //displays the state with its corresponding character in the states_display string
                                                    //if there are more than 26 states then repeat the symbols in the visualisation by wrapping back around
             );
-         
          }
       }
    

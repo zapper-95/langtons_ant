@@ -58,7 +58,7 @@ void apply_rule(enum colour *colour, struct ant *ant){ // Using LR rules
 }
 
 
-void apply_rule_general(enum colour *colour, struct ant *ant, struct rule *rule){
+void apply_rule_general(int *colour, struct ant *ant, struct rule *rule){
     //check whether, for a given state, the ant should turn left or right
     //we do this by checking the rules string at the index corresponding to the state
 

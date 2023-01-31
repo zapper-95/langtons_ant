@@ -29,16 +29,19 @@ int main(int argc, char* argv[]){
 			rule->rules = current_rule; 
 
 			//runs the advanced functionality
+			for (int i = 0; i < 0; i++){
+				advanced_visualise_and_advance(ant, rule);
+			}
 			do
 			{
 				advanced_visualise_and_advance(ant, rule);
 			} while (not_quit());  
 			
-			free(rule); //free the memory allocated for the rule (as it is no longer needed
+			free(rule); //free the memory allocated for the rule (as it is no longer needed)
 
 
 		}
-		else{ //run the basic functionality if no rule is provided
+		else{ //runs the basic functionality if no rule is provided
 			start_visualisation(ant);
 
 			do
