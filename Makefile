@@ -1,6 +1,6 @@
 export LD_LIBRARY_PATH=$(PWD):LD_LIBRARY_PATH 
 all:
-	gcc -L $(PWD) -Wall -o ant main.c -lant
+	gcc -L "$(PWD)" -Wall -o ant main.c -lant
 	./ant LLRR
 library:
 	gcc -fPIC -c langton.c -o langton.o -Wall
